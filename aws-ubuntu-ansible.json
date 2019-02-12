@@ -1,0 +1,29 @@
+{
+    "builders" :[
+        {
+            "type": "amazon-ebs",
+            "access_key" : "", //add your access key
+            "secret_key" : "", //add your secret key
+            "region": "us-west-2",
+            "source_ami": "ami-9abea4fb",
+            "instance_type" : "t2.micro",
+            "ami_description" : "Amazing First AMI",
+            "ami_name": "Tomcat-Ansible{{isotime | clean_ami_name}}",
+            "ssh_username": "ubuntu"
+        }
+    ],
+    "provisioners" : [
+        {
+            "type": "shell",
+            "inline": [
+                "sudo apt-get -y update",
+                "sudo apt-get install -y python-pip python-dev",
+                "sudo pip install ansible"
+            ]
+        },
+        {
+            "type" : "ansible-local",
+            "playbook_file": "playbooks/tomcat.yml"
+        }
+    ] 
+}
